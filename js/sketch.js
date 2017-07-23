@@ -1,69 +1,75 @@
+const squares = [];
+
 function setup() {
   createCanvas(windowWidth, windowHeight); 
   background(255);
   noStroke();
-  drawSquares();
-}
-
-function draw() {
-  // const redrawRate = round(mouseX / width * 60);
-  // console.log(redrawRate);
-  if (frameCount % 12 == 0) {
-    drawSquares();
-  }
-}
-
-function drawSquares() {
+  colorMode(HSB);
   const size = width / 12;
+  const baseHue = random(360);
   for (let x = 0; x < width; x += size) {
     for (let y = 0; y < height; y += size) {
-      drawSquare(size, x, y);
+      squares.push(new Square(size, x, y, baseHue));
     }
   }
 }
 
-function drawSquare(size, x, y) {
-  const darkColor = randomDarkColor();
-  const lightColor = randomLightColor();
-  push();
-  translate(x, y);
-  drawLargeSquare(size, lightColor, darkColor);
-  drawSmallSquare(size, lightColor, darkColor);
-  pop();
+function draw() {
+  for(square of squares) {
+    square.colorShift(random([random(0.5), 1]));
+    square.draw();
+  }
 }
 
-function drawLargeSquare(size, lightColor, darkColor) {
-  fill(lightColor);
-  triangle(0, 0, size, 0, 0, size);
-  translate(size, size);
-  fill(darkColor);
-  triangle(0, 0, -size, 0, 0, -size-1);
-  translate(-size, -size);
-}
+function randomColor() {
+  return color(round(random(360)), saturation, random(100));
+} 
 
-function drawSmallSquare(size, lightColor, darkColor) {
-  size /= 3;
-  translate(size, size);
-  fill(darkColor);
-  triangle(0, 0, size, 0, 0, size);
-  translate(size, size);
-  fill(lightColor);
-  triangle(0, 0, -size, 0, 0, -size);
-}
+class Square {
+  constructor(size, x, y, baseHue) {
+    this.size = size;
+    this.x = x;
+    this.y = y;
+    this.saturation = random(40, 70);
+    this.baseHue = baseHue + random(15) + random([0, 360/12, -360/12]);
+  }
 
-function randomDarkGrey() {
-  // return random([0, 255])
-  return round(random(128));
-}
+  draw() {
+    push();
+    translate(this.x, this.y);
+    this.drawLargeSquare();
+    this.drawSmallSquare();
+    pop();
+  }
 
-function randomLightGrey() {
-  return randomDarkGrey() + 128;
-}
+  drawLargeSquare() {
+    fill(this.lightColor());
+    triangle(0, 0, this.size, 0, 0, this.size);
+    translate(this.size, this.size);
+    fill(this.darkColor());
+    triangle(0, 0, -this.size, 0, 0, -this.size);
+    translate(-this.size, -this.size);
+  }
 
-function randomDarkColor() {
-  return color(randomDarkGrey(), randomDarkGrey(), randomDarkGrey());
-}
+  drawSmallSquare() {
+    size = this.size / 3;
+    translate(size, size);
+    fill(this.darkColor());
+    triangle(0, 0, size, 0, 0, size);
+    translate(size, size);
+    fill(this.lightColor());
+    triangle(0, 0, -size, 0, 0, -size);
+  }
 
-function randomLightColor() {
-  return color(randomLightGrey(), randomLightGrey(), randomLightGrey());
+  lightColor() {
+    return color(this.baseHue, this.saturation, 90);
+  }
+
+  darkColor() {
+    return color(this.baseHue, this.saturation, 15);
+  }
+
+  colorShift(amount) {
+    this.baseHue = (this.baseHue + amount) % 360;
+  }
 }
