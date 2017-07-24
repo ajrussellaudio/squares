@@ -1,11 +1,11 @@
 const squares = [];
 
 function setup() {
-  createCanvas(windowWidth, windowHeight); 
+  createCanvas(windowWidth * 2/3, windowHeight).parent("p5Container"); 
   background(255);
   noStroke();
   colorMode(HSB);
-  const size = width / 12;
+  const size = width / 9;
   const baseHue = random(360);
   for (let x = 0; x < width; x += size) {
     for (let y = 0; y < height; y += size) {
@@ -16,22 +16,16 @@ function setup() {
 
 function draw() {
   for(square of squares) {
-    square.colorShift(random([random(0.5), 1]));
     square.draw();
   }
 }
 
-function randomColor() {
-  return color(round(random(360)), saturation, random(100));
-} 
-
 class Square {
-  constructor(size, x, y, baseHue) {
+  constructor(size, x, y) {
     this.size = size;
     this.x = x;
     this.y = y;
     this.saturation = random(40, 70);
-    this.baseHue = baseHue + random(15) + random([0, 360/12, -360/12]);
   }
 
   draw() {
@@ -62,14 +56,10 @@ class Square {
   }
 
   lightColor() {
-    return color(this.baseHue, this.saturation, 90);
+    return color(0, 0, 100);
   }
 
   darkColor() {
-    return color(this.baseHue, this.saturation, 15);
-  }
-
-  colorShift(amount) {
-    this.baseHue = (this.baseHue + amount) % 360;
+    return color(0, 0, 20);
   }
 }
