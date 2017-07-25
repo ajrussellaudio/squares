@@ -5,7 +5,7 @@ function setup() {
   background(255);
   noStroke();
   colorMode(HSB);
-  const size = width / 9;
+  const size = width / 12;
   const baseHue = random(360);
   for (let x = 0; x < width; x += size) {
     for (let y = 0; y < height; y += size) {
