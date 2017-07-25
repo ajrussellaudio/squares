@@ -1,12 +1,3 @@
 body {
   margin: 0;
-  display: flex;
-}
-
-#p5Container {
-  flex-basis: 67%;
-}
-
-#content {
-  flex-basis: 33%;
 }

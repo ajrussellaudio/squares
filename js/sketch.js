@@ -1,7 +1,7 @@
 const squares = [];
 
 function setup() {
-  createCanvas(windowWidth * 2/3, windowHeight).parent("p5Container"); 
+  createCanvas(windowWidth, windowHeight); 
   background(255);
   noStroke();
   colorMode(HSB);
